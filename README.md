@@ -7,3 +7,4 @@ bower install
 ```
 and open the HTML file
 
+![Data](http://i.imgur.com/RMppoQ0.png "Data visualization")
