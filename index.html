@@ -20,25 +20,30 @@
 </head>
 
 <body unresolved>
-  <template is="dom-bind">
+  <template is="dom-bind" id="t">
     <google-map map="{{map}}" latitude="38.6" longitude="-95.8" zoom="5"
-      styles='[{"stylers":[{"saturation":-85}]},{"featureType":"water","stylers":[{"lightness":-20}]}]'>
+      styles='[{"stylers":[{"saturation":-85}]},{"featureType":"water","stylers":[{"lightness":-20}]}]'
+      on-google-map-ready="setPointSize"
+      on-zoom-changed="setPointSize">
     </google-map>
-
     <point-overlay map="[[map]]" uniforms="{{uniforms}}" data="{{data}}">
     </point-overlay>
-    
     <iron-ajax auto handle-as="json"
       url="bower_components/point-overlay/tornadoes-1950-2014.json"
       last-response="{{data}}">
     </iron-ajax>
-
-    <paper-card elevation="2">
-      <paper-slider min="5" max="100" value="30" immediate-value="{{uniforms.pointSize}}">
-      </paper-slider>
-    </paper-card>
+    
+    <!-- <paper-card elevation="2">
+      <paper-slider min="5" max="100" value="30"></paper-slider>
+    </paper-card> -->
   </template>
-
-  <script src="main.js"></script>
+  
+  <script>
+    var t = document.querySelector('#t');
+    t.setPointSize = function(e) {
+      this.uniforms.pointSize = Math.exp(0.3 * this.map.getZoom());
+      this.notifyPath('uniforms.pointSize', this.uniforms.pointSize);
+    };
+  </script>
 </body>
 </html>
